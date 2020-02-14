@@ -1,0 +1,25 @@
+{
+  "name": "tixl-btc-utils",
+  "version": "0.0.1",
+  "description": "Some utilities that are used to communicate wit the Bitcoin blockchain.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tixl/tixl-btc-utils.git"
+  },
+  "keywords": [
+    "Tixl",
+    "MTXLT",
+    "Bitcoin",
+    "BTC"
+  ],
+  "author": "Tixl gGmbH <support@tixl.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tixl/tixl-btc-utils/issues"
+  },
+  "homepage": "https://github.com/tixl/tixl-btc-utils#readme"
+}
