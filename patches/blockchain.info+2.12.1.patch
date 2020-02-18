@@ -1,0 +1,26 @@
+diff --git a/node_modules/blockchain.info/blockexplorer/endpoints.js b/node_modules/blockchain.info/blockexplorer/endpoints.js
+index 959b87e..b9bee92 100644
+--- a/node_modules/blockchain.info/blockexplorer/endpoints.js
++++ b/node_modules/blockchain.info/blockexplorer/endpoints.js
+@@ -2,7 +2,7 @@ var UrlPattern = require('url-pattern')
+ 
+ module.exports = {
+   rawblock: new UrlPattern('/rawblock/:hash(?api_code=:apiCode)'),
+-  rawtx: new UrlPattern('/rawtx/:hash(?api_code=:apiCode)'),
++  rawtx: new UrlPattern('/rawtx/:hash(?api_code=:apiCode)(&format=:format)'),
+   blockHeight: new UrlPattern('/block-height/:height?format=json(&api_code=:apiCode)'),
+   address: new UrlPattern('/address/:address?format=json(&limit=:limit)(&offset=:offset)(&api_code=:apiCode)'),
+   multiaddr: new UrlPattern('/multiaddr?active=:active(&n=:limit)(&offset=:offset)(&api_code=:apiCode)'),
+diff --git a/node_modules/blockchain.info/blockexplorer/index.js b/node_modules/blockchain.info/blockexplorer/index.js
+index d0e558c..3736d9d 100644
+--- a/node_modules/blockchain.info/blockexplorer/index.js
++++ b/node_modules/blockchain.info/blockexplorer/index.js
+@@ -29,7 +29,7 @@ function getBlock (api, blockHash, options) {
+ 
+ function getTx (api, txHash, options) {
+   options = options || {}
+-  return api.request('rawtx', { hash: txHash, apiCode: options.apiCode })
++  return api.request('rawtx', { hash: txHash, apiCode: options.apiCode, format: options.format })
+ }
+ 
+ function getBlockHeight (api, blockHeight, options) {

@@ -4,6 +4,7 @@
   "description": "Some utilities that are used to communicate wit the Bitcoin blockchain.",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "patch-package",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,5 +22,18 @@
   "bugs": {
     "url": "https://github.com/tixl/tixl-btc-utils/issues"
   },
-  "homepage": "https://github.com/tixl/tixl-btc-utils#readme"
+  "homepage": "https://github.com/tixl/tixl-btc-utils#readme",
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.19.2",
+    "bitcoinjs-lib": "^5.1.7",
+    "blockchain.info": "^2.12.1",
+    "coinselect": "^3.1.11",
+    "jsbi": "^3.1.1",
+    "patch-package": "^6.2.0",
+    "postinstall-postinstall": "^2.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.5"
+  }
 }
