@@ -1,6 +1,6 @@
 {
   "name": "tixl-btc-utils",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Some utilities that are used to communicate wit the Bitcoin blockchain.",
   "main": "dist/index.js",
   "scripts": {
