@@ -1,5 +1,5 @@
 {
-  "name": "tixl-btc-utils",
+  "name": "@tixl/tixl-btc-utils",
   "version": "0.1.2",
   "description": "Some utilities that are used to communicate wit the Bitcoin blockchain.",
   "main": "dist/index.js",
