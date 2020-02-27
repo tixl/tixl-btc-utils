@@ -1,5 +1,3 @@
-import JSBI from 'jsbi';
-
 export interface Transaction {
   transactionData: any;
   toSign: string[];
@@ -12,10 +10,31 @@ export interface SignedTransaction extends Transaction {
 
 export interface TransactionInfos {
   confirmations: number;
-  hash: TransactionHash;
+  hash: string;
 }
 
-export type Address = string; // In Hex Format, uncompressed
-export type Satoshi = JSBI; // Amount in Satoshi, use JSBI for Big Int
-export type Signature = string;
-export type TransactionHash = string;
+export interface ReceivedFunds {
+  confirmations: number;
+  transactionHash: string;
+  value: number;
+}
+
+export class Wallet {
+  address: string;
+  publicKey: string;
+  privateKey: string;
+
+  constructor(address: string, publicKey: string, privateKey: string) {
+    this.address = address;
+    this.publicKey = publicKey;
+    this.privateKey = privateKey;
+  }
+
+  public toString = () => {
+    return `
+      Address: ${this.address}
+      Public Key: ${this.publicKey}
+      Private Key: ${this.privateKey}
+    `;
+  }
+}

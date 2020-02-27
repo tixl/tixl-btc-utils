@@ -1,4 +1,3 @@
-import JSBI from 'jsbi';
 import { createTransaction, sendTransactionToNetwork, signTransaction } from './';
 
 const testnetAddressA = 'mtBNERDYmmnadKNCpWeyJbN1TqcuZxCh2Q';
@@ -8,7 +7,7 @@ const testSignature = '3044022047c1a06cff24bae7ca21d13708c6dda0b35905f3d1fca0147
 
 const testPublicKey = '039435962039d6960003b1841ca33c9fb7ec498f75cea5efa1c6e7be9ee3e9c1c5';
 
-createTransaction(testnetAddressA, testnetAddressB, JSBI.BigInt(1000))
+createTransaction(testnetAddressA, testnetAddressB, 1000)
   .then(async (transaction: any) => {
     const signedTransaction = signTransaction(transaction, testPublicKey, [testSignature]);
     await sendTransactionToNetwork(signedTransaction);
@@ -17,4 +16,3 @@ createTransaction(testnetAddressA, testnetAddressB, JSBI.BigInt(1000))
     console.error('Error:');
     console.error(err);
   });
-//
