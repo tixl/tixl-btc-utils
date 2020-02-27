@@ -9,7 +9,7 @@ interface BlockcypherEmbeddedTransaction {
   outputs: BlockcypherEmbeddedTransactionInputOrOutput[];
 }
 
-interface BlockcypherEmbeddedTransactionInputOrOutput {
+export interface BlockcypherEmbeddedTransactionInputOrOutput {
   addresses: string[];
   value: number;
 }
