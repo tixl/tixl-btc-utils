@@ -47,7 +47,7 @@ const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
 /**
  * Returns all BTC funds that have been transferred `fromAddress` to `toAddress`
  */
-export default async (fromAddress: string, toAddress: string): Promise<ReceivedFunds[]|void> => {
+export default async (fromAddress: string, toAddress: string): Promise<ReceivedFunds[]> => {
   try {
     const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${toAddress}/full`);
     return (data.txs || []).reduce(createReceivedFundsReducer(fromAddress, toAddress), []);
