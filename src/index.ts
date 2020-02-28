@@ -5,6 +5,7 @@ import getReceivedFundsForTransaction from './functions/getReceivedFundsForTrans
 import getTransactionStatus from './functions/getTransactionStatus';
 import sendTransactionToNetwork from './functions/sendTransactionToNetwork';
 import signTransaction from './functions/signTransaction';
+import verifySignature from './functions/verifySignature';
 
 export {
   createTransaction,
@@ -13,5 +14,6 @@ export {
   getReceivedFundsForTransaction,
   getTransactionStatus,
   sendTransactionToNetwork,
-  signTransaction
+  signTransaction,
+  verifySignature
 }
