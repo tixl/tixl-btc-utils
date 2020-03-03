@@ -1,31 +1,26 @@
 import axios from 'axios';
-import { ReceivedFunds } from '../types';
+import { ReceivedFunds, TransactionInputOrOutput } from '../types';
 import { BLOCKCYPHER_BASE_URL } from '../config';
 
 interface BlockcypherEmbeddedTransaction {
   hash: string;
   confirmations: number;
-  inputs: BlockcypherEmbeddedTransactionInputOrOutput[];
-  outputs: BlockcypherEmbeddedTransactionInputOrOutput[];
-}
-
-export interface BlockcypherEmbeddedTransactionInputOrOutput {
-  addresses: string[];
-  value: number;
+  inputs: TransactionInputOrOutput[];
+  outputs: TransactionInputOrOutput[];
 }
 
 const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
   return (filtered: ReceivedFunds[], transaction: BlockcypherEmbeddedTransaction) => {
     let fundsValue = 0;
     let inputFound = false;
-    transaction.inputs.forEach((input: BlockcypherEmbeddedTransactionInputOrOutput) => {
+    transaction.inputs.forEach((input: TransactionInputOrOutput) => {
       if (input.addresses.includes(fromAddress)) {
         inputFound = true;
       }
     });
 
     if (inputFound) {
-      transaction.outputs.forEach((output: BlockcypherEmbeddedTransactionInputOrOutput) => {
+      transaction.outputs.forEach((output: TransactionInputOrOutput) => {
         if (output.addresses.includes(toAddress)) {
           fundsValue += output.value;
         }

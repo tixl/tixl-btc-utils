@@ -1,8 +1,10 @@
 import axios from 'axios';
-import { TransactionInfos } from '../types';
+import { TransactionInfos, TransactionInputOrOutput } from '../types';
 import { BLOCKCYPHER_BASE_URL } from '../config';
+import { getTransactionSender } from './shared';
 
 export default async (transactionHash: string): Promise<TransactionInfos> => {
-  const { confirmations, hash } = await axios.get(`${BLOCKCYPHER_BASE_URL}/txs/${transactionHash}`);
-  return { confirmations, hash };
+  const { confirmations, hash, inputs } = await axios.get(`${BLOCKCYPHER_BASE_URL}/txs/${transactionHash}`);
+  const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
+  return { confirmations, hash, sender };
 };

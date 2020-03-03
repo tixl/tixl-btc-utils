@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { ReceivedFunds } from '../types';
+import { ReceivedFunds, TransactionInputOrOutput } from '../types';
 import { BLOCKCYPHER_BASE_URL } from '../config';
-import { BlockcypherEmbeddedTransactionInputOrOutput } from './getReceivedFunds';
 
 /**
  * Returns all funds that have been sent to `toAddress` in the transaction identified by the `transactionHash`
@@ -10,7 +9,7 @@ export default async (toAddress: string, transactionHash: string): Promise<Recei
   try {
     const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/txs/${transactionHash}`);
     let fundsValue = 0;
-    data.outputs.forEach((output: BlockcypherEmbeddedTransactionInputOrOutput) => {
+    data.outputs.forEach((output: TransactionInputOrOutput) => {
       if (output.addresses.includes(toAddress)) {
         fundsValue += output.value;
       }
