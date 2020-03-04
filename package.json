@@ -3,6 +3,7 @@
   "version": "0.4.0",
   "description": "Some utilities that are used to communicate wit the Bitcoin blockchain.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "generate-wallet": "ts-node src/scripts/generateWallet.ts",
