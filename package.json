@@ -30,7 +30,8 @@
     "@types/bitcoinjs-lib": "^5.0.0",
     "axios": "^0.19.2",
     "bitcoinjs-lib": "^5.1.7",
-    "bitcore-message": "^1.0.4"
+    "bitcore-message": "^1.0.4",
+    "wallet-address-validator": "^0.2.4"
   },
   "devDependencies": {
     "@types/node": "^13.7.6",
