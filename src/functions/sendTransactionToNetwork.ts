@@ -5,7 +5,7 @@ import { getTransactionSender } from './shared';
 
 export default async (transaction: SignedTransaction): Promise<TransactionInfos> => {
   const { publicKeys, signatures, toSign, transactionData } = transaction;
-  const { confirmations, hash, inputs } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/send`, JSON.stringify({
+  const { data: { confirmations, hash, inputs } } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/send`, JSON.stringify({
     pubkeys: publicKeys,
     signatures,
     tosign: toSign,
