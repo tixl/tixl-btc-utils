@@ -11,7 +11,7 @@ export default async (fromAddress: string, toAddress: string, value: number): Pr
   };
 
   const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
-  const { tosign, tx } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/new`, JSON.stringify(transactionData));
+  const { data: { tosign, tx } } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/new`, JSON.stringify(transactionData));
   return {
     sender,
     transactionData: tx,
