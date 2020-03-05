@@ -1,4 +1,4 @@
-type BitcoinAddress = string;
+export type BitcoinAddress = string;
 
 export interface Transaction {
   // currently only transactions with one sender are supported by this library (e.g. no multi-sign)

@@ -9,6 +9,7 @@ import sendTransactionToNetwork from "./functions/sendTransactionToNetwork";
 import signTransaction from "./functions/signTransaction";
 import verifySignature from "./functions/verifySignature";
 import generateBtcAdrFromTixlAdr from "./functions/generateBtcAdrFromTixlAdr";
+import getSenderAddressesForAddress from "./functions/getSenderAddressesForAddress";
 
 export {
   createTransaction,
@@ -21,5 +22,6 @@ export {
   sendTransactionToNetwork,
   signTransaction,
   verifySignature,
-  generateBtcAdrFromTixlAdr
+  generateBtcAdrFromTixlAdr,
+  getSenderAddressesForAddress
 };
