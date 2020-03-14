@@ -6,5 +6,5 @@ Currently relies on the [Blockcypher API](https://www.blockcypher.com/dev/bitcoi
 
 - [Generate an address](https://bitcoinpaperwallet.com/bitcoinpaperwallet/generate-wallet.html?design=alt-testnet)
 
-- Claim free test BTC from faucet on [testnet-faucet.mempool.co](https://testnet-faucet.mempool.co/) or on [bitcoinfaucet.uo1.net](https://bitcoinfaucet.uo1.net/send.php)
+- Claim free test BTC from faucet on [tbtc.bitaps.com](https://tbtc.bitaps.com/) or on [bitcoinfaucet.uo1.net](https://bitcoinfaucet.uo1.net/send.php)
     
