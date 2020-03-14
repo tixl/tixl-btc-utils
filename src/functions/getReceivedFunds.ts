@@ -47,7 +47,7 @@ export default async (fromAddress: string, toAddress: string): Promise<ReceivedF
     const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${toAddress}/full`);
     return (data.txs || []).reduce(createReceivedFundsReducer(fromAddress, toAddress), []);
   } catch (err) {
-    if (err.response.status === 404) {
+    if (err?.response?.status === 404) {
       return [];
     } else {
       throw err;
