@@ -9,21 +9,15 @@ interface BlockcypherEmbeddedTransaction {
   outputs: TransactionInputOrOutput[];
 }
 
-const createReceivedFundsReducer = (fromAddress: string | null, toAddress: string) => {
+const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
   return (filtered: ReceivedFunds[], transaction: BlockcypherEmbeddedTransaction) => {
     let fundsValue = 0;
     let inputFound = false;
-
-    if (fromAddress) {
-      transaction.inputs.forEach((input: TransactionInputOrOutput) => {
-        if (input.addresses.includes(fromAddress)) {
-          inputFound = true;
-        }
-      });
-    } else {
-      inputFound = transaction.inputs.length > 0;
-    }
-
+    transaction.inputs.forEach((input: TransactionInputOrOutput) => {
+      if (input.addresses.includes(fromAddress)) {
+        inputFound = true;
+      }
+    });
 
     if (inputFound) {
       transaction.outputs.forEach((output: TransactionInputOrOutput) => {
@@ -48,9 +42,9 @@ const createReceivedFundsReducer = (fromAddress: string | null, toAddress: strin
 /**
  * Returns all BTC funds that have been transferred `fromAddress` to `toAddress`
  */
-export default async (fromAddress: string | null, toAddress: string): Promise<ReceivedFunds[]> => {
+export default async (fromAddress: string, toAddress: string): Promise<ReceivedFunds[]> => {
   try {
-    const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${fromAddress}/full?limit=50`);
+    const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${toAddress}/full?limit=50`);
     return (data.txs || []).reduce(createReceivedFundsReducer(fromAddress, toAddress), []);
   } catch (err) {
     if (err?.response?.status === 404) {
