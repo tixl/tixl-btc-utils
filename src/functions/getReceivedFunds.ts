@@ -44,7 +44,7 @@ const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
  */
 export default async (fromAddress: string, toAddress: string): Promise<ReceivedFunds[]> => {
   try {
-    const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${toAddress}/full?limit=50`);
+    const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${fromAddress}/full?limit=50`);
     return (data.txs || []).reduce(createReceivedFundsReducer(fromAddress, toAddress), []);
   } catch (err) {
     if (err?.response?.status === 404) {
