@@ -1,13 +1,7 @@
 import axios from 'axios';
 import { ReceivedFunds, TransactionInputOrOutput } from '../types';
 import { BLOCKCYPHER_BASE_URL } from '../config';
-
-interface BlockcypherEmbeddedTransaction {
-  hash: string;
-  confirmations: number;
-  inputs: TransactionInputOrOutput[];
-  outputs: TransactionInputOrOutput[];
-}
+import { BlockcypherEmbeddedTransaction } from './shared';
 
 const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
   return (filtered: ReceivedFunds[], transaction: BlockcypherEmbeddedTransaction) => {
