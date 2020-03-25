@@ -11,6 +11,7 @@ import signTransaction from "./functions/signTransaction";
 import verifySignature from "./functions/verifySignature";
 import generateBtcAdrFromTixlAdr from "./functions/generateBtcAdrFromTixlAdr";
 import getSenderAddressesForAddress from "./functions/getSenderAddressesForAddress";
+import { RateLimitError } from './functions/shared';
 
 export {
   createTransaction,
@@ -25,5 +26,6 @@ export {
   signTransaction,
   verifySignature,
   generateBtcAdrFromTixlAdr,
-  getSenderAddressesForAddress
+  getSenderAddressesForAddress,
+  RateLimitError,
 };

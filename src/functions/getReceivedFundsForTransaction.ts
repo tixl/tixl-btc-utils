@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ReceivedFunds, TransactionInputOrOutput } from '../types';
 import { BLOCKCYPHER_BASE_URL } from '../config';
+import { RateLimitError } from './shared';
 
 /**
  * Returns all funds that have been sent to `toAddress` in the transaction identified by the `transactionHash`
@@ -27,6 +28,8 @@ export default async (toAddress: string, transactionHash: string): Promise<Recei
   } catch (err) {
     if (err.response.status === 404) {
       return null;
+    } else if (err?.response?.status === 429) {
+      throw new RateLimitError();
     } else {
       throw err;
     }

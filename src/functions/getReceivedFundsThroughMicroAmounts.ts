@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { BLOCKCYPHER_BASE_URL } from '../config';
 import { ReceivedFunds, TransactionInputOrOutput } from '../types';
-import { BlockcypherEmbeddedTransaction } from './shared';
+import { BlockcypherEmbeddedTransaction, RateLimitError } from './shared';
 
 const createReceivedFundsReducer = (tixlNetworkBtcAddress: string) => {
   return (filtered: ReceivedFunds[], transaction: BlockcypherEmbeddedTransaction) => {
@@ -35,6 +35,8 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
   } catch (err) {
     if (err?.response?.status === 404) {
       return [];
+    } else if (err?.response?.status === 429) {
+      throw new RateLimitError();
     } else {
       throw err;
     }
