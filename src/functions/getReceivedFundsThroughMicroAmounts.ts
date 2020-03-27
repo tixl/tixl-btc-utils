@@ -16,16 +16,11 @@ const findMicroAmountTransactions = (verificationReceiverAddress: string, transa
   return microAmountTransactions;
 };
 
-interface ReceivedFundsThroughMicroAmounts {
-  microAmountTransactionHash?: string;
-  receivedFunds: ReceivedFunds[];
-}
-
 /**
  * Returns all funds that have been sent to the `tixlNetworkBtcAddress` from the same address which has sent a micro
  * amount (basically any BTC amount > 0) to the `receiverAddress`
  */
-export default async (receiverAddress: string, tixlNetworkBtcAddress: string): Promise<ReceivedFundsThroughMicroAmounts[]> => {
+export default async (receiverAddress: string, tixlNetworkBtcAddress: string): Promise<ReceivedFunds[]> => {
   try {
     const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/addrs/${receiverAddress}/full?limit=50`);
     const microAmountTransactions = findMicroAmountTransactions(receiverAddress, data.txs);
@@ -33,7 +28,7 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
       return [];
     }
 
-    const result = [];
+    let allReceivedFunds: ReceivedFunds[] = [];
     for (const transaction of microAmountTransactions) {
       if (transaction.inputs.length > 1 || transaction.inputs[0].addresses.length > 1) {
         throw new Error('Unsupported micro amount transaction');
@@ -43,17 +38,14 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
       const receivedFunds = await getReceivedFunds(microAmountTransactionSenderAddress, tixlNetworkBtcAddress);
 
       if (receivedFunds.length > 0) {
-        result.push({
-          microAmountTransactionHash: transaction.hash,
-          receivedFunds,
-        });
+        allReceivedFunds = allReceivedFunds.concat(receivedFunds);
       }
 
       // wait a little bit to avoid hitting blockcypher API limits
       await new Promise(resolve => setTimeout(resolve, 500));
     }
 
-    return result;
+    return allReceivedFunds;
   } catch (err) {
     if (err?.response?.status === 404) {
       return [];
