@@ -8,7 +8,7 @@ const findMicroAmountTransactions = (verificationReceiverAddress: string, transa
   const microAmountTransactions: BlockcypherEmbeddedTransaction[] = [];
   transactions.forEach((transaction: BlockcypherEmbeddedTransaction) => {
     transaction.outputs.forEach((output: TransactionInputOrOutput) => {
-      if (output.addresses.includes(verificationReceiverAddress)) {
+      if ((output.addresses || []).includes(verificationReceiverAddress)) {
         microAmountTransactions.push(transaction);
       }
     })

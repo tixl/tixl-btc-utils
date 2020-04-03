@@ -11,7 +11,7 @@ export default async (toAddress: string, transactionHash: string): Promise<Recei
     const { data } = await axios.get(`${BLOCKCYPHER_BASE_URL}/txs/${transactionHash}`);
     let fundsValue = 0;
     data.outputs.forEach((output: TransactionInputOrOutput) => {
-      if (output.addresses.includes(toAddress)) {
+      if ((output.addresses || []).includes(toAddress)) {
         fundsValue += output.value;
       }
     });
