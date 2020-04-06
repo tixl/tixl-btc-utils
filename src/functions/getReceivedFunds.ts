@@ -15,7 +15,7 @@ const createReceivedFundsReducer = (fromAddress: string, toAddress: string) => {
 
     if (inputFound) {
       transaction.outputs.forEach((output: TransactionInputOrOutput) => {
-        if (output.addresses.includes(toAddress)) {
+        if ((output.addresses || []).includes(toAddress)) {
           fundsValue += output.value;
         }
       });
