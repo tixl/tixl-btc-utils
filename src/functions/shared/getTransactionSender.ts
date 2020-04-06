@@ -1,9 +1,9 @@
 import { TransactionInputOrOutput } from '../../types';
 
-export default (transactionInputs: TransactionInputOrOutput[]): string => {
+export default (transactionInputs: TransactionInputOrOutput[] = []): string => {
   const collectedInputAddresses: Set<string> = new Set([]);
   transactionInputs.forEach((input: TransactionInputOrOutput) => {
-    input.addresses.forEach((address: string) => {
+    (input.addresses || []).forEach((address: string) => {
       collectedInputAddresses.add(address);
     });
   });
