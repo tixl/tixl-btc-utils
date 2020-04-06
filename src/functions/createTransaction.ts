@@ -7,7 +7,7 @@ const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees:
   const clonedOutputs = [...outputs];
 
   const outputIndex = clonedOutputs.findIndex((output: TransactionInputOrOutput) => {
-    return output.addresses.includes(outputAddress);
+    return (output.addresses || []).includes(outputAddress);
   });
 
   if (outputIndex >= 0) {
@@ -18,7 +18,7 @@ const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees:
 };
 
 export const assertAllOutputsArePositive = (transaction: Transaction) => {
-  transaction.transactionData.outputs.forEach((output: TransactionInputOrOutput) => {
+  (transaction.transactionData.outputs || []).forEach((output: TransactionInputOrOutput) => {
     if (output.value <= 0) {
       throw new Error(`Found output with value ${output.value}, can not send this transaction. Transaction as JSON: ${JSON.stringify(transaction)}`);
     }
