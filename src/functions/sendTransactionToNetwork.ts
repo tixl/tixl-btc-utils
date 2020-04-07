@@ -11,8 +11,11 @@ export default async (transaction: SignedTransaction): Promise<TransactionInfos>
     tosign: toSign,
     tx: transactionData,
   }));
-  console.info(JSON.stringify(result.data));
-  const { data: { confirmations, hash, inputs } } = result;
+  const { data: { txs } } = result;
+  if (txs.length === 0 || txs.length > 1) {
+    throw new Error('This code can only deal with one tx at the moment');
+  }
+  const { confirmations, hash, inputs } = txs[0];
   const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
   return { confirmations, hash, sender };
 };
