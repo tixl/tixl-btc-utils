@@ -7,6 +7,13 @@ export interface Transaction {
   toSign: string[];
 }
 
+export interface EmbeddedTransaction {
+  hash: string;
+  confirmations: number;
+  inputs: TransactionInputOrOutput[];
+  outputs: TransactionInputOrOutput[];
+}
+
 export interface SignedTransaction extends Transaction {
   signatures: string[];
   publicKeys: string[];

@@ -1,18 +1,17 @@
-import axios from 'axios';
 import { SignedTransaction, TransactionInfos, TransactionInputOrOutput } from '../types';
-import { BLOCKCYPHER_BASE_URL } from '../config';
 import { getTransactionSender } from './shared';
+import { functions } from '../firebase';
 
 export default async (transaction: SignedTransaction): Promise<TransactionInfos> => {
   const { publicKeys, signatures, toSign, transactionData } = transaction;
-  const result = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/send`, JSON.stringify({
-    pubkeys: publicKeys,
+  const sendTransaction = functions.httpsCallable('sendTransaction');
+  const result = await sendTransaction({
+    publicKeys,
     signatures,
-    tosign: toSign,
-    tx: transactionData,
-  }));
-  const { data: { tx } } = result;
-  const { confirmations, hash, inputs } = tx;
+    toSign,
+    transactionData,
+  });
+  const { data: { confirmations, hash, inputs } } = result;
   const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
   return { confirmations, hash, sender };
 };

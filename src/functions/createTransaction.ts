@@ -1,7 +1,6 @@
-import axios from 'axios';
 import { Transaction, TransactionInputOrOutput } from '../types';
-import { BLOCKCYPHER_BASE_URL } from '../config';
 import { getTransactionSender } from './shared';
+import { functions } from '../firebase';
 
 const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees: number, outputAddress: string): TransactionInputOrOutput[] => {
   const clonedOutputs = [...outputs];
@@ -43,29 +42,23 @@ export default async (fromAddress: string, toAddress: string, value: number): Pr
   };
   const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
 
-  console.log('Doing first request');
+  const createTransaction = functions.httpsCallable('createTransaction');
+
   // we create the transaction first to determine the recommended fee
-  const { data: { tx: { fees } } } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/new`, JSON.stringify(transactionData));
+  const { data: { tx: { fees } } } = await createTransaction(transactionData);
 
   // we remove the fee from the transaction output
   transactionData.outputs = reduceFeesFromReceiverOutput(transactionData.outputs, fees, toAddress);
   transactionData.fees = fees;
 
-  try {
-    // create the transaction again with the adjusted fees
-    const { data: { tosign, tx } } = await axios.post(`${BLOCKCYPHER_BASE_URL}/txs/new`, JSON.stringify(transactionData));
-    const transaction: Transaction = {
-      sender,
-      toSign: tosign,
-      transactionData: tx,
-    };
+  // create the transaction again with the adjusted fees
+  const { data: { toSign, tx } } = await createTransaction(transactionData);
+  const transaction: Transaction = {
+    sender,
+    toSign,
+    transactionData: tx,
+  };
 
-    assertAllOutputsArePositive(transaction);
-    return transaction;
-  } catch (err) {
-    if (err.response?.status === 400) {
-      throw new Error(`Bad request from API, errors are here: ${JSON.stringify(err.response.data)}`)
-    }
-    throw err;
-  }
+  assertAllOutputsArePositive(transaction);
+  return transaction;
 };
