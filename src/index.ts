@@ -3,6 +3,7 @@ import generateWallet from "./functions/generateWallet";
 import getReceivedFunds from "./functions/getReceivedFunds";
 import getReceivedFundsForTransaction from "./functions/getReceivedFundsForTransaction";
 import getReceivedFundsThroughMicroAmounts from './functions/getReceivedFundsThroughMicroAmounts';
+import getSenderAddressesForAddress from './functions/getSenderAddressesForAddress';
 import getTransactionStatus from "./functions/getTransactionStatus";
 import isSegWitAddress from "./functions/isSegWitAddress";
 import isValidBTCAddress from "./functions/isValidBTCAddress";
@@ -17,6 +18,7 @@ export {
   getReceivedFunds,
   getReceivedFundsForTransaction,
   getReceivedFundsThroughMicroAmounts,
+  getSenderAddressesForAddress,
   getTransactionStatus,
   isSegWitAddress,
   isValidBTCAddress,
