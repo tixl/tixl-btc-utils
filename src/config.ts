@@ -1,3 +1,5 @@
+import * as firebase from 'firebase';
+
 interface FirebaseConfig {
   apiKey: string,
   authDomain: string,
@@ -13,6 +15,7 @@ const config = {
 
 export const setFirebaseConfig = (firebaseConfig: FirebaseConfig) => {
   config.firebase = firebaseConfig;
+  firebase.initializeApp(config.firebase);
 }
 
 export default config;
