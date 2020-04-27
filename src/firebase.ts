@@ -19,6 +19,7 @@ class Functions {
     }
 
     if (!this.initialized) {
+      this.initialized = true;
       firebase.initializeApp(this.config);
     }
 
