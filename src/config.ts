@@ -1,21 +1,14 @@
-import * as firebase from 'firebase';
+import { FirebaseConfig, functions } from './firebase';
 
-interface FirebaseConfig {
-  apiKey: string,
-  authDomain: string,
-  databaseURL: string,
-  projectId: string,
-  appId: string,
-  measurementId: string,
+interface Config {
+  firebase?: FirebaseConfig;
 }
 
-const config = {
-  firebase: {},
-};
+const config: Config = {};
 
 export const setFirebaseConfig = (firebaseConfig: FirebaseConfig) => {
   config.firebase = firebaseConfig;
-  firebase.initializeApp(config.firebase);
+  functions.setConfig(config.firebase);
 }
 
 export default config;
