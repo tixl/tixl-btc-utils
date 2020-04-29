@@ -28,10 +28,6 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
 
   let allReceivedFunds: ReceivedFunds[] = [];
   for (const transaction of microAmountTransactions) {
-    if (transaction.inputs.length > 1 || transaction.inputs[0].addresses.length > 1) {
-      throw new Error('Unsupported micro amount transaction');
-    }
-
     const receivedFunds = await getReceivedFundsForTransaction(tixlNetworkBtcAddress, transaction.hash);
     if (receivedFunds) {
       allReceivedFunds.push(receivedFunds);
