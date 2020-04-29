@@ -1,6 +1,6 @@
 import { EmbeddedTransaction, ReceivedFunds, TransactionInputOrOutput } from '../types';
-import getReceivedFunds from './getReceivedFunds';
 import { functions } from '../firebase';
+import getReceivedFundsForTransaction from './getReceivedFundsForTransaction';
 
 const findMicroAmountTransactions = (verificationReceiverAddress: string, transactions: EmbeddedTransaction[]): EmbeddedTransaction[] => {
   const microAmountTransactions: EmbeddedTransaction[] = [];
@@ -32,11 +32,9 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
       throw new Error('Unsupported micro amount transaction');
     }
 
-    const microAmountTransactionSenderAddress = transaction.inputs[0].addresses[0];
-    const receivedFunds = await getReceivedFunds(microAmountTransactionSenderAddress, tixlNetworkBtcAddress);
-
-    if (receivedFunds.length > 0) {
-      allReceivedFunds = allReceivedFunds.concat(receivedFunds);
+    const receivedFunds = await getReceivedFundsForTransaction(tixlNetworkBtcAddress, transaction.hash);
+    if (receivedFunds) {
+      allReceivedFunds.push(receivedFunds);
     }
   }
 
