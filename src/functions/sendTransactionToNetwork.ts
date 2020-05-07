@@ -1,5 +1,4 @@
-import { SignedTransaction, TransactionInfos, TransactionInputOrOutput } from '../types';
-import { getTransactionSender } from './shared';
+import { SignedTransaction, TransactionInfos } from '../types';
 import { functions } from '../firebase';
 
 export default async (transaction: SignedTransaction): Promise<TransactionInfos> => {
@@ -11,7 +10,6 @@ export default async (transaction: SignedTransaction): Promise<TransactionInfos>
     toSign,
     transactionData,
   });
-  const { data: { confirmations, hash, inputs } } = result;
-  const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
-  return { confirmations, hash, sender };
+  const { data: { confirmations, hash } } = result;
+  return { confirmations, hash };
 };

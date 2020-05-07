@@ -1,8 +1,6 @@
 export type BitcoinAddress = string;
 
 export interface Transaction {
-  // currently only transactions with one sender are supported by this library (e.g. no multi-sign)
-  sender: BitcoinAddress;
   transactionData: any;
   toSign: string[];
 }
@@ -22,8 +20,8 @@ export interface SignedTransaction extends Transaction {
 export interface TransactionInfos {
   confirmations: number;
   hash: string;
-  // currently only transactions with one sender are supported by this library (e.g. no multi-sign)
-  sender: BitcoinAddress
+  inputs: TransactionInputOrOutput[];
+  outputs: TransactionInputOrOutput[];
 }
 
 export interface ReceivedFunds {

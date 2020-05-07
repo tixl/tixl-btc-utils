@@ -1,5 +1,4 @@
 import { Transaction, TransactionInputOrOutput } from '../types';
-import { getTransactionSender } from './shared';
 import { functions } from '../firebase';
 
 const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees: number, outputAddress: string): TransactionInputOrOutput[] => {
@@ -40,7 +39,6 @@ export default async (fromAddress: string, toAddress: string, value: number): Pr
     outputs: [{ addresses: [toAddress], value }],
     preference: 'medium',
   };
-  const sender = getTransactionSender(inputs as TransactionInputOrOutput[]);
 
   const createTransaction = functions.httpsCallable('createTransaction');
 
@@ -54,7 +52,6 @@ export default async (fromAddress: string, toAddress: string, value: number): Pr
   // create the transaction again with the adjusted fees
   const { data: { toSign, tx } } = await createTransaction(transactionData);
   const transaction: Transaction = {
-    sender,
     toSign,
     transactionData: tx,
   };
