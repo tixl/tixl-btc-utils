@@ -10,6 +10,6 @@ export default async (transaction: SignedTransaction): Promise<TransactionInfos>
     toSign,
     transactionData,
   });
-  const { data: { confirmations, hash } } = result;
-  return { confirmations, hash };
+  const { data: { confirmations, hash, inputs, outputs } } = result;
+  return { confirmations, hash, inputs, outputs };
 };
