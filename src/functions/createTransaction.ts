@@ -1,6 +1,13 @@
 import { Transaction, TransactionInputOrOutput } from '../types';
 import { functions } from '../firebase';
 
+class InsufficientFundsError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'InsufficientFundsError';
+  }
+}
+
 const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees: number, outputAddress: string): TransactionInputOrOutput[] => {
   const clonedOutputs = [...outputs];
 
@@ -15,10 +22,10 @@ const reduceFeesFromReceiverOutput = (outputs: TransactionInputOrOutput[], fees:
   return clonedOutputs;
 };
 
-export const assertAllOutputsArePositive = (transaction: Transaction) => {
-  (transaction.transactionData.outputs || []).forEach((output: TransactionInputOrOutput) => {
+export const assertAllOutputsArePositive = (outputs: TransactionInputOrOutput[]) => {
+  (outputs || []).forEach((output: TransactionInputOrOutput) => {
     if (output.value <= 0) {
-      throw new Error(`Found output with value ${output.value}, can not send this transaction. Transaction as JSON: ${JSON.stringify(transaction)}`);
+      throw new InsufficientFundsError(`Found output with value ${output.value}, can not send this transaction. Outputs as JSON: ${JSON.stringify(outputs)}`);
     }
   });
 };
@@ -37,25 +44,27 @@ export default async (fromAddress: string, toAddress: string, value: number): Pr
     fees: undefined,
     inputs,
     outputs: [{ addresses: [toAddress], value }],
-    preference: 'medium',
+    preference: 'low',
   };
 
   const createTransaction = functions.httpsCallable('createTransaction');
 
   // we create the transaction first to determine the recommended fee
-  const { data: { tx: { fees } } } = await createTransaction(transactionData);
+  let { data } = await createTransaction(transactionData);
+  assertAllOutputsArePositive(data.tx.outputs);
 
   // we remove the fee from the transaction output
-  transactionData.outputs = reduceFeesFromReceiverOutput(transactionData.outputs, fees, toAddress);
-  transactionData.fees = fees;
+  transactionData.outputs = reduceFeesFromReceiverOutput(transactionData.outputs, data.tx.fees, toAddress);
+  transactionData.fees = data.tx.fees;
 
   // create the transaction again with the adjusted fees
-  const { data: { toSign, tx } } = await createTransaction(transactionData);
+  data = (await createTransaction(transactionData)).data;
+  const { toSign, tx } = data;
   const transaction: Transaction = {
     toSign,
     transactionData: tx,
   };
 
-  assertAllOutputsArePositive(transaction);
+  assertAllOutputsArePositive(transaction.transactionData.outputs);
   return transaction;
 };
