@@ -14,6 +14,18 @@ const findMicroAmountTransactions = (verificationReceiverAddress: string, transa
   return microAmountTransactions;
 };
 
+const hasOutputsForAddress = (tx: EmbeddedTransaction, address: string): boolean => {
+  let hasOutputs = false;
+
+  tx.outputs.forEach((output) => {
+    if (output.addresses?.includes(address)) {
+      hasOutputs = true;
+    }
+  });
+
+  return hasOutputs;
+}
+
 /**
  * Returns all funds that have been sent to the `tixlNetworkBtcAddress` from the same address which has sent a micro
  * amount (basically any BTC amount > 0) to the `receiverAddress`
@@ -27,10 +39,12 @@ export default async (receiverAddress: string, tixlNetworkBtcAddress: string): P
   }
 
   let allReceivedFunds: ReceivedFunds[] = [];
-  for (const transaction of microAmountTransactions) {
-    const receivedFunds = await getReceivedFundsForTransaction(tixlNetworkBtcAddress, transaction.hash);
-    if (receivedFunds) {
-      allReceivedFunds.push(receivedFunds);
+  for (const tx of microAmountTransactions) {
+    if (hasOutputsForAddress(tx, tixlNetworkBtcAddress)) {
+      const receivedFunds = await getReceivedFundsForTransaction(tixlNetworkBtcAddress, tx.hash);
+      if (receivedFunds) {
+        allReceivedFunds.push(receivedFunds);
+      }
     }
   }
 
